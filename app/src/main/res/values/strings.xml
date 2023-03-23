@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TODO_APP</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="home2">Home</string>
+    <string name="settings">Settings</string>
+    <string name="home_fragment">Home Fragment</string>
+    <string name="home2_fragment">Home2 Fragment</string>
+    <string name="setttings_fragment">Setttings Fragment</string>
 </resources>
