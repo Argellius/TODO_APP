@@ -8,4 +8,11 @@
     <string name="home_fragment">Home Fragment</string>
     <string name="home2_fragment">Home2 Fragment</string>
     <string name="setttings_fragment">Setttings Fragment</string>
+    <string name="need_to_do">Need to do!</string>
+    <string name="tasks">Tasks</string>
+    <string name="new_task" />
+    <string name="task_name" />
+    <string name="date" />
+    <string name="select_date" />
+    <string name="save" />
 </resources>
