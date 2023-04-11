@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data android:name="android.arch.persistence.room.RoomDatabase" android:value="com.example.todo_app.database.TaskDatabase"/>
     </application>
 
 </manifest>

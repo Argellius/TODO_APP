@@ -15,18 +15,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/label_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Title" />
-
-            <EditText
-                android:id="@+id/edit_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-
-            <TextView
                 android:id="@+id/label_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,19 +66,25 @@
                     android:id="@+id/radio_button_low"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nízká" />
+                    android:text="Nízká"
+                    android:tag="1"
+                    />
 
                 <RadioButton
                     android:id="@+id/radio_button_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Střední" />
+                    android:text="Střední"
+                    android:tag="2"
+                    />
 
                 <RadioButton
                     android:id="@+id/radio_button_high"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vysoká" />
+                    android:text="Vysoká"
+                    android:tag="3"
+                    />
 
             </RadioGroup>
 
@@ -115,7 +109,7 @@
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/label_notification_time"
+                    android:id="@+id/notification_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Notification Time" />

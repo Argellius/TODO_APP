@@ -1,3 +1,16 @@
+buildscript {
+    ext.objectboxVersion = "3.5.1"
+    repositories {
+        mavenCentral()
+        // Note: 2.9.0 and older are available on jcenter()
+    }
+    dependencies {
+        // Android Gradle Plugin 3.4.0 or later supported.
+        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("io.objectbox:objectbox-gradle-plugin:$objectboxVersion")
+    }
+}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id 'com.android.application' version '7.4.2' apply false
