@@ -1,12 +1,20 @@
 package com.example.todo_app
 
+import TaskAdapter
+import TaskEntity
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.todo_app.database.ObjectBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.w3c.dom.Entity
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,17 +29,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class Task_view : Fragment() {
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+    private lateinit var recyclerView : RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
 
 
 
@@ -44,9 +45,27 @@ class Task_view : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_task_view, container, false)
+        val taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
 
-        val button = v?.findViewById<FloatingActionButton>(R.id.floatingbutton)
+        recyclerView = v.findViewById<RecyclerView>(R.id.task_list)
+        // Vytvoříme instanci adaptéru s prázdným seznamem
+        val taskListAdapter = TaskAdapter(emptyList())
+
+        val format = SimpleDateFormat("dd.MM.yyyy")
+
+// Přidáme položky do seznamu
+        val tasks = taskBox.all
+        taskListAdapter.setData(tasks)
+
+// Předáme instanci adaptéru k RecyclerView
+        recyclerView.adapter = taskListAdapter
+
+        val layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = layoutManager
+
+        val button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
         button?.setOnClickListener{
+
             Log.i("button", "button?.setOnClickListener{")
             val secondFragment = TaskNew()
             Log.i("button", "secondFragment{")
@@ -58,31 +77,5 @@ class Task_view : Fragment() {
 
 
         return v;
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Home2.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Task_view().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
-    fun openNewTask(view: View) {
-
-
-
     }
 }

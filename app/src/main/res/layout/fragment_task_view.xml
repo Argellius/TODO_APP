@@ -9,32 +9,24 @@
     android:tooltipText="Add task"
     tools:context=".Task_view">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/home2_fragment"
-        android:textSize="26sp"
 
-        />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/task_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/task_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingbutton"
+        android:id="@+id/floating_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|right|center_vertical"
+        android:layout_gravity="bottom|end|center_vertical"
         android:layout_margin="32sp"
-        android:contentDescription="Add item"
+        android:contentDescription="@string/add_item"
         android:src="@drawable/baseline_add_24"
         app:backgroundTint="#03A9F4"
         app:borderWidth="3dp"
         app:maxImageSize="34sp"
-        android:onClick="openNewTask"
         />
 
 

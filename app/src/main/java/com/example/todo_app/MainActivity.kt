@@ -3,6 +3,7 @@ package com.example.todo_app
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.example.todo_app.database.ObjectBox
 import com.example.todo_app.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -10,6 +11,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ObjectBox.init(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

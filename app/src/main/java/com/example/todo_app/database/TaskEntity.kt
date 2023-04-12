@@ -10,5 +10,6 @@ data class TaskEntity(
     var dueDate: Date?,
     var priority: Int,
     var notification: Boolean,
-    var notificationTime: String?
+    var notificationTime: String?,
+    var isDone : Boolean = false
 )

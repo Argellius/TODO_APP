@@ -63,7 +63,6 @@ class TaskNew : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ObjectBox.init(requireContext())
     }
 
     override fun onCreateView(
@@ -105,7 +104,7 @@ class TaskNew : Fragment() {
         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories.map { it.name })
         taskCategorySpinner.adapter = categoryAdapter
 
-        priorityRadioGroup?.setOnCheckedChangeListener { group, checkedId ->
+        priorityRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radio: RadioButton? = view.findViewById<RadioButton>(checkedId)
             priority = radio?.tag.toString()
         }
@@ -158,12 +157,12 @@ class TaskNew : Fragment() {
         TaskBox.put(taskEntity);
 
         // Clear form
-        taskDescriptionEditText?.setText("")
-        taskCategorySpinner?.setSelection(0)
-        taskDueDateEditText?.setText("")
-        priorityRadioGroup?.clearCheck()
-        switchNotification?.isChecked = false
-        notificationTime?.setText("")
+        taskDescriptionEditText.setText("")
+        taskCategorySpinner.setSelection(0)
+        taskDueDateEditText.setText("")
+        priorityRadioGroup.clearCheck()
+        switchNotification.isChecked = false
+        notificationTime.setText("")
         resetEditTexts()
     }
 

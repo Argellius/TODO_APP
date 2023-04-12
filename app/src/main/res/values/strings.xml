@@ -15,4 +15,6 @@
     <string name="date" />
     <string name="select_date" />
     <string name="save" />
+    <string name="add_item">Add item</string>
+    <string name="edit_note">Edit</string>
 </resources>
