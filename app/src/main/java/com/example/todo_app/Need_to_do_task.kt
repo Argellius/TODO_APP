@@ -1,10 +1,16 @@
 package com.example.todo_app
 
+import TaskEntity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
+import com.example.todo_app.database.ObjectBox
+import java.text.SimpleDateFormat
+import java.util.Date
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,16 +23,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Need_to_do_task : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -34,7 +33,32 @@ class Need_to_do_task : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_need_to_do, container, false)
+        val v = inflater.inflate(R.layout.fragment_need_to_do, container, false)
+        val descriptionTextView: TextView = v.findViewById(R.id.description_text_view)
+        val dateTextView: TextView = v.findViewById(R.id.date_text_view)
+
+
+        val taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
+        val firstTask = taskBox.all.filter { !it.isDone }
+                                    .sortedBy { it.position }
+                                    .firstOrNull()
+        if (firstTask != null )
+        {
+
+            descriptionTextView.text = firstTask.description
+            val sdf = SimpleDateFormat("dd.MM.yyyy")
+            if (firstTask.dueDate != null)
+            {
+                val dateStr = sdf.format(firstTask.dueDate)
+                dateTextView.text = dateStr
+            }
+        }
+        else {
+            descriptionTextView.text = "You have completed everything, you are amazing!\n"
+            dateTextView.text = ""
+        }
+
+        return v
     }
 
     companion object {

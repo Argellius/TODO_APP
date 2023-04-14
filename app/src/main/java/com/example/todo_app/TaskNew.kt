@@ -8,13 +8,14 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.text.InputType
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.todo_app.database.ObjectBox
-import io.objectbox.BoxStore
+import io.objectbox.Box
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,7 +52,9 @@ class TaskNew : Fragment() {
     private lateinit var myContext: Context
     private lateinit var switchNotification: Switch
     private lateinit var notificationTime: TextView
-
+    private lateinit var taskBox: Box<TaskEntity>
+    private var actualTaskEntity: TaskEntity? = null
+    private var editTask: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +72,9 @@ class TaskNew : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+         taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
+
         // vytvoření Coroutine scope
         val myScope = CoroutineScope(Dispatchers.Main)
 
@@ -84,6 +90,18 @@ class TaskNew : Fragment() {
         switchNotification = view.findViewById<Switch>(R.id.switch_notification)
         priorityRadioGroup = view.findViewById<RadioGroup>(R.id.radio_group_priority)
         notificationTime = view.findViewById<TextView>(R.id.notification_time)
+
+
+        val id = arguments?.getInt("id") ?: -1
+        if (id != -1)
+        {
+            editTask = true
+            actualTaskEntity = taskBox.get(id.toLong())
+        }
+        // získání hodnoty description z argumentů a přiřazení k taskDescriptionEditText
+        if (actualTaskEntity != null)
+        taskDescriptionEditText.setText(actualTaskEntity?.description)
+
 
         // Inicializace prvního EditText pole
         val editText1 = createEditText()
@@ -142,19 +160,39 @@ class TaskNew : Fragment() {
     }
 
     private suspend fun saveTask() {
+
+        if (editTask == false)
+        actualTaskEntity = TaskEntity()
+        var dueDate : Date? = null
+        var priorityValue : String
         // Retrieve values from form
+        if (TextUtils.isEmpty(taskDescriptionEditText.text)) {
+            Toast.makeText(requireContext(), "Vyplňte description", Toast.LENGTH_LONG).show()
+            return
+        }
+
         val description = taskDescriptionEditText.text.toString()
+
         val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val dueDate = format.parse(taskDueDateEditText.text.toString())
-        val priority = priority
+        if (!TextUtils.isEmpty(taskDueDateEditText.text))
+         dueDate = format.parse(taskDueDateEditText.text.toString())
+        if (priority != null)
+         priorityValue = priority
+
         val category =  categories[taskCategorySpinner.selectedItemPosition].id
         val notificationEnabled = switchNotification.isChecked
+        actualTaskEntity?.description
+        actualTaskEntity?.description = description
+        actualTaskEntity?.priority = if (TextUtils.isEmpty(priority)) -1 else priority.toInt()
+        actualTaskEntity?.category = category
+        actualTaskEntity?.dueDate = if (dueDate == null) null else dueDate
+        actualTaskEntity?.notification = notificationEnabled
+        actualTaskEntity?.notificationTime = null
+        actualTaskEntity?.note = ""
+        actualTaskEntity?.position = (taskBox.all.count() + 1).toLong()
 
-        val taskEntity = TaskEntity(description = description, priority = priority.toInt(), category = category, dueDate = dueDate, notification = notificationEnabled, notificationTime = null)
-
-        val TaskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
-
-        TaskBox.put(taskEntity);
+        if (actualTaskEntity != null)
+            taskBox.put(actualTaskEntity);
 
         // Clear form
         taskDescriptionEditText.setText("")
@@ -164,6 +202,10 @@ class TaskNew : Fragment() {
         switchNotification.isChecked = false
         notificationTime.setText("")
         resetEditTexts()
+
+        // návrat na předchozí fragment
+        val fragmentManager = requireActivity().supportFragmentManager
+        fragmentManager.popBackStack()
     }
 
 

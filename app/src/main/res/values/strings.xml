@@ -17,4 +17,5 @@
     <string name="save" />
     <string name="add_item">Add item</string>
     <string name="edit_note">Edit</string>
+    <string name="delete_note">Delete a note\n</string>
 </resources>

@@ -1,19 +1,21 @@
 package com.example.todo_app
 
-import TaskAdapter
+import ItemTouchHelperCallback
+import com.example.todo_app.recyclerview.TaskListAdapter
 import TaskEntity
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.database.ObjectBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.w3c.dom.Entity
 import java.util.*
 
 
@@ -32,10 +34,6 @@ class Task_view : Fragment() {
     private lateinit var recyclerView : RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
-
     }
 
 
@@ -45,34 +43,38 @@ class Task_view : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_task_view, container, false)
+
+        val floating_button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
+        recyclerView = v.findViewById<RecyclerView>(R.id.task_list)
+
         val taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
 
-        recyclerView = v.findViewById<RecyclerView>(R.id.task_list)
         // Vytvoříme instanci adaptéru s prázdným seznamem
-        val taskListAdapter = TaskAdapter(emptyList())
+        val taskListAdapter = TaskListAdapter(emptyList(), taskBox, requireActivity().supportFragmentManager )
 
         val format = SimpleDateFormat("dd.MM.yyyy")
 
-// Přidáme položky do seznamu
-        val tasks = taskBox.all
+        // Přidáme položky do seznamu
+        val tasks = taskBox.all.sortedBy { it.position }
         taskListAdapter.setData(tasks)
 
-// Předáme instanci adaptéru k RecyclerView
+        // Předáme instanci adaptéru k RecyclerView
         recyclerView.adapter = taskListAdapter
 
         val layoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = layoutManager
 
-        val button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
-        button?.setOnClickListener{
+        // Create the ItemTouchHelper and attach it to the RecyclerView
+        val callback = ItemTouchHelperCallback(taskListAdapter)
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(recyclerView)
 
-            Log.i("button", "button?.setOnClickListener{")
+        floating_button?.setOnClickListener{
             val secondFragment = TaskNew()
-            Log.i("button", "secondFragment{")
-            val transaction = fragmentManager?.beginTransaction();
-            Log.i("button", "transaction")
-            transaction?.replace(com.example.todo_app.R.id.frame_layout,secondFragment)
-            transaction?.commit()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.frame_layout, secondFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
 
 

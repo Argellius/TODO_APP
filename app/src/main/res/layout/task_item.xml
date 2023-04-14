@@ -35,7 +35,6 @@
             android:textColor="@android:color/black"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="1.1.2020"
             />
         <ImageView
             android:id="@+id/edit_note_button"
@@ -45,6 +44,16 @@
             android:clickable="true"
             android:contentDescription="@string/edit_note"
             android:foreground="?android:attr/selectableItemBackground"/>
+
+        <ImageView
+            android:id="@+id/delete_note_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete"
+            android:clickable="true"
+            android:contentDescription="@string/delete_note"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
 
     </LinearLayout>
 
