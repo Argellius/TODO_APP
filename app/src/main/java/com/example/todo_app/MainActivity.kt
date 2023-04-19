@@ -2,6 +2,7 @@ package com.example.todo_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.todo_app.database.ObjectBox
 import com.example.todo_app.databinding.ActivityMainBinding
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.addToBackStack(fragment.javaClass.simpleName)
         fragmentTransaction.commit()
 
     }

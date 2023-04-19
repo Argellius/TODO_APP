@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
 import com.example.todo_app.TaskNew
+import com.example.todo_app.Task_view
 import io.objectbox.Box
 import kotlinx.coroutines.currentCoroutineContext
 import java.util.*
@@ -25,7 +26,8 @@ import java.util.*
 class TaskListAdapter(
     private var dataSet: List<TaskEntity>,
     private val taskBox: Box<TaskEntity>,
-    private val fragmentManager: FragmentManager) :
+    private val fragmentManager: FragmentManager
+) :
     RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
     /**
@@ -34,11 +36,11 @@ class TaskListAdapter(
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
-        val checkbox : CheckBox
-        val date : TextView
-        val note : EditText
-        val delete_button : ImageView
-        val edit_button : ImageView
+        val checkbox: CheckBox
+        val date: TextView
+        val note: EditText
+        val delete_button: ImageView
+        val edit_button: ImageView
 
         init {
             // Define click listener for the ViewHolder's View
@@ -84,7 +86,8 @@ class TaskListAdapter(
         dataSet = newData
         notifyDataSetChanged()
     }
-    fun getData() : List<TaskEntity> {
+
+    fun getData(): List<TaskEntity> {
         return dataSet
     }
 
@@ -98,18 +101,48 @@ class TaskListAdapter(
         // contents of the view with that element
         viewHolder.textView.text = taskEntity.description
         if (taskEntity.dueDate != null)
-            viewHolder.date.text = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(taskEntity.dueDate)
+            viewHolder.date.text =
+                SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(taskEntity.dueDate)
         viewHolder.checkbox.isChecked = taskEntity.isDone
 
 
         viewHolder.checkbox.setOnCheckedChangeListener { _, isChecked ->
+
+            var continue_: Boolean = true;
+
             taskEntity.isDone = isChecked
+
             taskBox.put(taskEntity)
+
+            if (taskEntity.isDone == true) {
+                // Remove the unchecked task from the current position
+                dataSet =
+                    dataSet.toMutableList().apply { removeAt(taskEntity.position!!.toInt()) }
+                // Add the unchecked task to the end of the list
+                dataSet = dataSet.toMutableList().apply { add(taskEntity) }
+                // Notify the RecyclerView that the item has been moved
+                notifyItemMoved(taskEntity.position!!.toInt(), dataSet.size - 1)
+            }
+
+
+            // Update the positions of the tasks in the database
+            for (i in dataSet.indices) {
+                val task = dataSet[i]
+                task.position = i.toLong()
+                taskBox.put(task)
+            }
+
+
+            var task = fragmentManager.findFragmentByTag("Task_view") as? Task_view
+            task?.scrollRecyclerViewToPosition(0)
+
+
         }
 
 
         viewHolder.note.setText(dataSet[position].note)
         viewHolder.note.addTextChangedListener(object : TextWatcher {
+
             override fun afterTextChanged(s: Editable?) {
                 taskEntity.note = s.toString()
                 taskBox.put(taskEntity)
@@ -141,13 +174,13 @@ class TaskListAdapter(
         viewHolder.edit_button.setOnClickListener {
             val fragment = TaskNew()
 
-        // Vytvoření Bundle a předání dat z aktivity do fragmentu
+            // Vytvoření Bundle a předání dat z aktivity do fragmentu
             val bundle = Bundle()
             bundle.putInt("id", taskEntity.id.toInt())
             bundle.putString("description", taskEntity.description)
             fragment.arguments = bundle
 
-        // Otevření fragmentu
+            // Otevření fragmentu
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(R.id.frame_layout, fragment)
             transaction.addToBackStack(null)
@@ -192,8 +225,6 @@ class TaskListAdapter(
         // Notify the adapter of the move
         notifyItemMoved(currentPosition, newPosition)
     }
-
-
 
 
     // Return the size of your dataset (invoked by the layout manager)

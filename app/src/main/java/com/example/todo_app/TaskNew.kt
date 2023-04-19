@@ -27,9 +27,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-
 data class Category(val id: Int, val name: String)
-
 
 
 /**
@@ -47,7 +45,7 @@ class TaskNew : Fragment() {
     private lateinit var datePicker: EditText
     private lateinit var containerLayout: LinearLayout
     private var countEditTextNotificationTime = 1
-    private lateinit var categories : List<Category>
+    private lateinit var categories: List<Category>
     var priority: String = ""
     private lateinit var myContext: Context
     private lateinit var switchNotification: Switch
@@ -64,6 +62,7 @@ class TaskNew : Fragment() {
         super.onAttach(context)
         myContext = context
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
@@ -73,7 +72,7 @@ class TaskNew : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-         taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
+        taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
 
         // vytvoření Coroutine scope
         val myScope = CoroutineScope(Dispatchers.Main)
@@ -93,14 +92,13 @@ class TaskNew : Fragment() {
 
 
         val id = arguments?.getInt("id") ?: -1
-        if (id != -1)
-        {
+        if (id != -1) {
             editTask = true
             actualTaskEntity = taskBox.get(id.toLong())
         }
         // získání hodnoty description z argumentů a přiřazení k taskDescriptionEditText
         if (actualTaskEntity != null)
-        taskDescriptionEditText.setText(actualTaskEntity?.description)
+            taskDescriptionEditText.setText(actualTaskEntity?.description)
 
 
         // Inicializace prvního EditText pole
@@ -114,12 +112,15 @@ class TaskNew : Fragment() {
 
 
         // Set up category spinner
-         categories = listOf(
+        categories = listOf(
             Category(1, "Kategorie 1"),
             Category(2, "Kategorie 2"),
             Category(3, "Kategorie 3")
         )
-        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories.map { it.name })
+        val categoryAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            categories.map { it.name })
         taskCategorySpinner.adapter = categoryAdapter
 
         priorityRadioGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -134,7 +135,8 @@ class TaskNew : Fragment() {
             selectedCalendar.set(Calendar.YEAR, year)
             selectedCalendar.set(Calendar.MONTH, month)
             selectedCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedCalendar.time)
+            val formattedDate =
+                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(selectedCalendar.time)
             taskDueDateEditText.setText(formattedDate)
         }
 
@@ -162,9 +164,9 @@ class TaskNew : Fragment() {
     private suspend fun saveTask() {
 
         if (editTask == false)
-        actualTaskEntity = TaskEntity()
-        var dueDate : Date? = null
-        var priorityValue : String
+            actualTaskEntity = TaskEntity()
+        var dueDate: Date? = null
+        var priorityValue: String
         // Retrieve values from form
         if (TextUtils.isEmpty(taskDescriptionEditText.text)) {
             Toast.makeText(requireContext(), "Vyplňte description", Toast.LENGTH_LONG).show()
@@ -175,11 +177,11 @@ class TaskNew : Fragment() {
 
         val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         if (!TextUtils.isEmpty(taskDueDateEditText.text))
-         dueDate = format.parse(taskDueDateEditText.text.toString())
+            dueDate = format.parse(taskDueDateEditText.text.toString())
         if (priority != null)
-         priorityValue = priority
+            priorityValue = priority
 
-        val category =  categories[taskCategorySpinner.selectedItemPosition].id
+        val category = categories[taskCategorySpinner.selectedItemPosition].id
         val notificationEnabled = switchNotification.isChecked
         actualTaskEntity?.description
         actualTaskEntity?.description = description
@@ -246,7 +248,7 @@ class TaskNew : Fragment() {
                 editText.setText(formattedTime)
 
                 // Add a new EditText when the previous one is filled
-                if (editText.text.isNotEmpty() && countEditTextNotificationTime < 3 ) {
+                if (editText.text.isNotEmpty() && countEditTextNotificationTime < 3) {
                     countEditTextNotificationTime++
                     val newEditText = createEditText()
                     containerLayout.addView(newEditText)

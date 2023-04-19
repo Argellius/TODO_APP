@@ -18,4 +18,10 @@
     <string name="add_item">Add item</string>
     <string name="edit_note">Edit</string>
     <string name="delete_note">Delete a note\n</string>
+    <string name="check_mark_description">Check task as done</string>
+    <string name="delete_icon_description">Delete the task\n</string>
+    <string name="task_completed">completed task</string>
+    <string name="smazat">Smazat</string>
+    <string name="pozn_mka">Poznámka</string>
+    <string name="vyreseno">Vyřešeno</string>
 </resources>

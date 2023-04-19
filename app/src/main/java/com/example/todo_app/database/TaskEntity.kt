@@ -14,9 +14,9 @@ data class TaskEntity(
     var notificationTime: String?,
     var note: String?,
     var isDone : Boolean = false,
-    var position : Long?
+    var position : Long = -1
 
 
 ){
-    constructor() : this(0, "", 0, null, 0, false, null, null, false, null)
+    constructor() : this(0, "", 0, null, 0, false, null, null, false, -1)
 }

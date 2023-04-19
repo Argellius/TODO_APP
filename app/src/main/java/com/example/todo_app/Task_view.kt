@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,8 @@ class Task_view : Fragment() {
     }
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +58,9 @@ class Task_view : Fragment() {
         val format = SimpleDateFormat("dd.MM.yyyy")
 
         // Přidáme položky do seznamu
-        val tasks = taskBox.all.sortedBy { it.position }
+        val tasks = taskBox.all
+            .sortedBy { it.position }
+
         taskListAdapter.setData(tasks)
 
         // Předáme instanci adaptéru k RecyclerView
@@ -79,5 +84,11 @@ class Task_view : Fragment() {
 
 
         return v;
+    }
+
+    fun scrollRecyclerViewToPosition(position: Int) {
+        recyclerView.scrollToPosition(position)
+        Toast.makeText(context, "Hello World!", Toast.LENGTH_SHORT).show()
+
     }
 }

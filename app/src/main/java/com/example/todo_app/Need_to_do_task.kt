@@ -2,20 +2,20 @@ package com.example.todo_app
 
 import TaskEntity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.example.todo_app.database.ObjectBox
+import io.objectbox.Box
 import java.text.SimpleDateFormat
-import java.util.Date
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -23,6 +23,16 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Need_to_do_task : Fragment() {
+
+    private var allValidTask: List<TaskEntity>? = null
+    private var actPositon = 0
+    private lateinit var taskBox: Box<TaskEntity>
+    private lateinit var descriptionTextView: TextView
+    private lateinit var noteTextView: TextView
+    private lateinit var dateTextView: TextView
+    private lateinit var note_button: Button
+    private lateinit var delete_button: Button
+    private lateinit var complete_button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,51 +43,98 @@ class Need_to_do_task : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val v = inflater.inflate(R.layout.fragment_need_to_do, container, false)
-        val descriptionTextView: TextView = v.findViewById(R.id.description_text_view)
-        val dateTextView: TextView = v.findViewById(R.id.date_text_view)
+        val v = inflater.inflate(R.layout.fragment_need_to_do_task, container, false)
 
+        descriptionTextView = v.findViewById(R.id.description_text_view)
+        noteTextView = v.findViewById(R.id.note_text_view)
+        dateTextView = v.findViewById(R.id.date_text_view)
+        note_button = v.findViewById(R.id.note_button)
+        delete_button = v.findViewById(R.id.delete_button)
+        complete_button = v.findViewById(R.id.complete_button)
 
-        val taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
-        val firstTask = taskBox.all.filter { !it.isDone }
-                                    .sortedBy { it.position }
-                                    .firstOrNull()
-        if (firstTask != null )
-        {
+        var rlTop = v?.findViewById<LinearLayout>(R.id.llTop);
+        rlTop?.setOnTouchListener(LinearLayoutTouchListener(requireActivity(), this));
 
-            descriptionTextView.text = firstTask.description
-            val sdf = SimpleDateFormat("dd.MM.yyyy")
-            if (firstTask.dueDate != null)
-            {
-                val dateStr = sdf.format(firstTask.dueDate)
-                dateTextView.text = dateStr
-            }
-        }
-        else {
-            descriptionTextView.text = "You have completed everything, you are amazing!\n"
-            dateTextView.text = ""
-        }
+        taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
+        allValidTask = taskBox
+            .all
+            .filter { !it.isDone }
+            .sortedBy { it.position }
+
+        var firstTask = allValidTask?.getOrNull(actPositon) ?: null
+        setTask(firstTask)
 
         return v
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Home.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Need_to_do_task().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun setTask(firstTask: TaskEntity?) {
+        if (firstTask != null) {
+
+            descriptionTextView.text = firstTask.description
+
+            noteTextView.text = firstTask.note
+
+            if (!TextUtils.isEmpty(firstTask.note))
+            {
+                noteTextView.visibility = View.GONE
+
             }
+            else {
+                note_button.visibility = View.GONE
+            }
+
+            val sdf = SimpleDateFormat("dd.MM.yyyy")
+            if (firstTask.dueDate != null) {
+                val dateStr = sdf.format(firstTask.dueDate)
+                dateTextView.text = dateStr
+            } else
+                dateTextView.visibility = View.GONE
+
+        } else {
+            descriptionTextView.text = "You have completed everything, you are amazing!\n"
+            dateTextView.visibility = View.GONE
+            noteTextView.visibility = View.GONE
+            complete_button.visibility = View.GONE
+            note_button.visibility = View.GONE
+            delete_button.visibility = View.GONE
+
+        }
+
+        note_button.setOnClickListener {
+            if (noteTextView.isVisible)
+                noteTextView.visibility = View.GONE
+            else
+                noteTextView.visibility = View.VISIBLE
+        }
+
+        delete_button.setOnClickListener {
+            firstTask?.isDone = true
+            taskBox.put(firstTask)
+            val firstTask = taskBox.all.filter { !it.isDone }
+                .sortedBy { it.position }
+                .firstOrNull()
+
+
+            setTask(firstTask)
+
+        }
+
+    }
+
+
+    public fun swapToRight() {
+        if (actPositon >= allValidTask?.let { it.size - 1 } ?: -1) {
+            return
+        }
+        actPositon += 1
+        setTask(allValidTask?.get(actPositon))
+    }
+
+    public fun swapToLeft() {
+        if (actPositon <= 0) {
+            return
+        }
+        actPositon -= 1
+        setTask(allValidTask?.get(actPositon))
     }
 }

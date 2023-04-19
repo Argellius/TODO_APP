@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:button="@drawable/checkbox_custom"
             />
 
         <TextView
@@ -43,7 +44,8 @@
             android:src="@drawable/ic_edit"
             android:clickable="true"
             android:contentDescription="@string/edit_note"
-            android:foreground="?android:attr/selectableItemBackground"/>
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            />
 
         <ImageView
             android:id="@+id/delete_note_button"
@@ -52,7 +54,8 @@
             android:src="@drawable/ic_delete"
             android:clickable="true"
             android:contentDescription="@string/delete_note"
-            android:foreground="?android:attr/selectableItemBackground"/>
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            />
 
 
     </LinearLayout>
@@ -66,9 +69,9 @@
         android:textColor="@android:color/black"
         android:padding="16dp"/>
 
-    <View
+    <!--<View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray"/>-->
 
 </LinearLayout>

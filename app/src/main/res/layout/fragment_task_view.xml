@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#16C2D9"
     android:tooltipText="Add task"
+    android:background="@color/grey"
     tools:context=".Task_view">
 
 
