@@ -47,7 +47,7 @@ class Task_view : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_task_view, container, false)
 
-        val floating_button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
+        //val floating_button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
         recyclerView = v.findViewById<RecyclerView>(R.id.task_list)
 
         val taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
@@ -74,13 +74,13 @@ class Task_view : Fragment() {
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(recyclerView)
 
-        floating_button?.setOnClickListener{
+        /*floating_button?.setOnClickListener{
             val secondFragment = TaskNew()
             val transaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.frame_layout, secondFragment)
             transaction.addToBackStack(null)
             transaction.commit()
-        }
+        }*/
 
 
         return v;

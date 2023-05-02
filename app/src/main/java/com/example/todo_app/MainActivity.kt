@@ -21,15 +21,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        spinner = findViewById(R.id.spinner)
 
         val items = arrayOf("Položka 1", "Položka 2", "Položka 3")
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        spinner.adapter = adapter
-        setContentView(binding.root)
         replaceFragment(Need_to_do_task())
 
 
