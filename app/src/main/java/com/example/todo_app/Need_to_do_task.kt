@@ -1,7 +1,6 @@
 package com.example.todo_app
 
 import TaskEntity
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +13,6 @@ import com.example.todo_app.recyclerview.TaskListAdapter
 import com.example.todo_app.recyclerview.TaskListAdapterCategory
 import io.objectbox.Box
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Need_to_do_task.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Need_to_do_task : Fragment() {
 
     private var allValidTask: List<TaskEntity>? = null
@@ -42,10 +35,8 @@ class Need_to_do_task : Fragment() {
         val recyclerView_category: RecyclerView? = v?.findViewById(R.id.task_list_category)
 
         // Vytvoříme instanci adaptéru s prázdným seznamem
-        val taskListAdapter = TaskListAdapter(emptyList(), taskBox, requireActivity().supportFragmentManager, null )
+        val taskListAdapter = TaskListAdapter(emptyList(), taskBox )
         val taskListAdapter_category = TaskListAdapterCategory(emptyList(), taskBox, requireActivity().supportFragmentManager, null )
-
-        val format = SimpleDateFormat("dd.MM.yyyy")
 
         // Přidáme položky do seznamu
         val tasks = taskBox.all
@@ -132,17 +123,15 @@ class Need_to_do_task : Fragment() {
 //        }
 //
 //    }
-
-
-    public fun swapToRight() {
-        if (actPositon >= allValidTask?.let { it.size - 1 } ?: -1) {
-            return
-        }
+    fun swapToRight() {
+    if (actPositon >= (allValidTask?.size?.minus(1) ?: -1)) {
+        return
+    }
         actPositon += 1
         //setTask(allValidTask?.get(actPositon))
     }
 
-    public fun swapToLeft() {
+    fun swapToLeft() {
         if (actPositon <= 0) {
             return
         }

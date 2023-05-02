@@ -8,14 +8,12 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
-import com.example.todo_app.Task_view
 import io.objectbox.Box
 import java.util.*
 
 class TaskListAdapter(
     private var dataSet: List<TaskEntity>,
     private val taskBox: Box<TaskEntity>,
-    private val task_View: Task_view?
 ) :
     RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
@@ -87,11 +85,7 @@ class TaskListAdapter(
 
 
         viewHolder.checkbox.setOnCheckedChangeListener { _, isChecked ->
-
-            var continue_: Boolean = true;
-
             taskEntity.isDone = isChecked
-
             taskBox.put(taskEntity)
 
             if (taskEntity.isDone == true) {
@@ -104,7 +98,6 @@ class TaskListAdapter(
                 notifyItemMoved(taskEntity.position!!.toInt(), dataSet.size - 1)
             }
 
-
             // Update the positions of the tasks in the database
             for (i in dataSet.indices) {
                 val task = dataSet[i]
@@ -113,7 +106,7 @@ class TaskListAdapter(
             }
 
 
-            task_View?.scrollRecyclerViewToPosition(0)
+            //task_View?.scrollRecyclerViewToPosition(0)
 
         }
 
