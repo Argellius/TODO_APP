@@ -1,6 +1,7 @@
 package com.example.todo_app
 
 import TaskEntity
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -9,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.todo_app.database.ObjectBox
@@ -60,8 +60,11 @@ class Need_to_do_task : Fragment() {
             .all
             .filter { !it.isDone }
             .sortedBy { it.position }
-
-        var firstTask = allValidTask?.getOrNull(actPositon) ?: null
+        var firstTask : TaskEntity?;
+        if (allValidTask?.size ?: 0 > 0)
+            firstTask = allValidTask!!.getOrNull(actPositon)
+        else
+            firstTask = null
         setTask(firstTask)
 
         return v
@@ -71,16 +74,22 @@ class Need_to_do_task : Fragment() {
         if (firstTask != null) {
 
             descriptionTextView.text = firstTask.description
-
             noteTextView.text = firstTask.note
 
-            if (!TextUtils.isEmpty(firstTask.note))
+            if (TextUtils.isEmpty(firstTask.note))
             {
+                note_button.setEnabled(false)
                 noteTextView.visibility = View.GONE
+                note_button.setTextColor(Color.GRAY);
+                note_button.setBackgroundColor(getResources().getColor(R.color.darkYellow))
 
             }
             else {
-                note_button.visibility = View.GONE
+                note_button.setEnabled(true)
+                noteTextView.visibility = View.VISIBLE
+                note_button.setTextColor(Color.BLACK);
+                note_button.setBackgroundColor(getResources().getColor(R.color.myYellow))
+
             }
 
             val sdf = SimpleDateFormat("dd.MM.yyyy")

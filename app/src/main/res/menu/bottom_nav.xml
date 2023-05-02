@@ -2,18 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="@string/need_to_do"
+        android:title=""
         android:id="@+id/home"
         android:icon="@drawable/baseline_task_24"
         />
     <item
-        android:title="@string/tasks"
+        android:title=""
         android:id="@+id/home2"
         android:icon="@drawable/baseline_view_agenda_24"
 
+
         />
     <item
-        android:title="@string/settings"
+        android:title=""
         android:id="@+id/settings"
         android:icon="@drawable/baseline_settings_24"
         />

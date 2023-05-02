@@ -26,7 +26,8 @@ import java.util.*
 class TaskListAdapter(
     private var dataSet: List<TaskEntity>,
     private val taskBox: Box<TaskEntity>,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
+    private val task_View: Task_view?
 ) :
     RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
 
@@ -133,9 +134,7 @@ class TaskListAdapter(
             }
 
 
-            var task = fragmentManager.findFragmentByTag("Task_view") as? Task_view
-            task?.scrollRecyclerViewToPosition(0)
-
+            task_View?.scrollRecyclerViewToPosition(0)
 
         }
 

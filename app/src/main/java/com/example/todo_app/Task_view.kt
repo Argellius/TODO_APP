@@ -53,7 +53,7 @@ class Task_view : Fragment() {
         val taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
 
         // Vytvoříme instanci adaptéru s prázdným seznamem
-        val taskListAdapter = TaskListAdapter(emptyList(), taskBox, requireActivity().supportFragmentManager )
+        val taskListAdapter = TaskListAdapter(emptyList(), taskBox, requireActivity().supportFragmentManager, this )
 
         val format = SimpleDateFormat("dd.MM.yyyy")
 

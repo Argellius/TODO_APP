@@ -15,4 +15,6 @@
     <color name="grey">#f2f2f2</color>
     <color name="tyrkysova">#3cbcd4</color>
     <color name="myYellow">#FFEA00</color>
+    <color name="darkYellow">#EDCC08</color>
+    <color name="background_color_grey">#f2f2f2</color>
 </resources>
