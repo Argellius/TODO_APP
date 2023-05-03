@@ -1,22 +1,20 @@
 package com.example.todo_app.recyclerview
 
+import CategoryEntity
 import TaskEntity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
-import com.example.todo_app.Task_view
 import io.objectbox.Box
 import java.util.*
 
 class TaskListAdapterCategory(
-    private var dataSet: List<TaskEntity>,
-    private val taskBox: Box<TaskEntity>,
-    private val fragmentManager: FragmentManager,
-    private val task_View: Task_view?
+    private var dataSet: List<CategoryEntity>,
+    private val taskBox: Box<CategoryEntity>,
 ) :
     RecyclerView.Adapter<TaskListAdapterCategory.ViewHolder>() {
 
@@ -29,7 +27,7 @@ class TaskListAdapterCategory(
 
         init {
             // Define click listener for the ViewHolder's View
-            textView = view.findViewById(R.id.description_text_view_category) ?: throw NullPointerException("View must contain 'description_text_view_category'")
+            textView = view.findViewById(R.id.description_text_view_category)
         }
     }
 
@@ -49,34 +47,57 @@ class TaskListAdapterCategory(
         }
         notifyItemMoved(fromPosition, toPosition)
     }
+    fun setData(newData: List<CategoryEntity>) {
+        dataSet = newData
+        notifyDataSetChanged()
+    }
+
+    fun getData(): List<CategoryEntity> {
+        return dataSet
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    override fun onBindViewHolder(viewHolder: TaskListAdapterCategory.ViewHolder, position: Int) {
+
+        val taskEntity = dataSet[position]
+
+
+        // Get element from your dataset at this position and replace the
+        // contents of the view with that element
+        viewHolder.textView.text = taskEntity.description
+    }
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TaskListAdapterCategory.ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view =
             LayoutInflater
                 .from(viewGroup.context)
                 .inflate(R.layout.task_item_category, viewGroup, false)
 
-        return ViewHolder(view)
+        return TaskListAdapterCategory.ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val taskEntity = dataSet[position]
 
+    fun updateTask(currentPosition: Int, newPosition: Int) {
+        // Get the task entity at the current position
+        val taskEntity = dataSet[currentPosition]
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
-        holder.textView.text = taskEntity.description
-    }
+        // Remove the task from the current position in the list
+        dataSet = dataSet.toMutableList().apply { removeAt(currentPosition) }
 
-    fun setData(newData: List<TaskEntity>) {
-        dataSet = newData
-        notifyDataSetChanged()
-    }
+        // Add the task at the new position in the list
+        dataSet = dataSet.toMutableList().apply { add(newPosition, taskEntity) }.toList()
 
-    fun getData(): List<TaskEntity> {
-        return dataSet
+        // Update the positions of the tasks in the database
+        for (i in dataSet.indices) {
+            val task = dataSet[i]
+            task.position = i.toLong()
+            taskBox.put(task)
+        }
+
+        // Notify the adapter of the move
+        notifyItemMoved(currentPosition, newPosition)
     }
 
 

@@ -1,6 +1,8 @@
 package com.example.todo_app
 
+import CategoryEntity
 import ItemTouchHelperCallback
+import ItemTouchHelperCallbackCategory
 import com.example.todo_app.recyclerview.TaskListAdapter
 import TaskEntity
 import android.os.Bundle
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.database.ObjectBox
+import com.example.todo_app.recyclerview.TaskListAdapterCategory
 
 class Task_view : Fragment() {
 
@@ -31,13 +34,13 @@ class Task_view : Fragment() {
         //val floating_button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
         recyclerView = v.findViewById<RecyclerView>(R.id.task_list)
 
-        val taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
+        val categoryEntity = ObjectBox.store.boxFor(CategoryEntity::class.java)
 
         // Vytvoříme instanci adaptéru s prázdným seznamem
-        val taskListAdapter = TaskListAdapter(emptyList(), taskBox )
+        val taskListAdapter = TaskListAdapterCategory(emptyList(), categoryEntity )
 
         // Přidáme položky do seznamu
-        val tasks = taskBox.all
+        val tasks = categoryEntity.all
             .sortedBy { it.position }
 
         taskListAdapter.setData(tasks)
@@ -49,7 +52,7 @@ class Task_view : Fragment() {
         recyclerView.layoutManager = layoutManager
 
         // Create the ItemTouchHelper and attach it to the RecyclerView
-        val callback = ItemTouchHelperCallback(taskListAdapter)
+        val callback = ItemTouchHelperCallbackCategory(taskListAdapter)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(recyclerView)
 
