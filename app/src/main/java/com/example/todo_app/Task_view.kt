@@ -3,7 +3,7 @@ package com.example.todo_app
 import CategoryEntity
 import ItemTouchHelperCallback
 import ItemTouchHelperCallbackCategory
-import com.example.todo_app.recyclerview.TaskListAdapter
+import ItemTouchHelperCallbackCategoryEdit
 import TaskEntity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.database.ObjectBox
+import com.example.todo_app.recyclerview.TaskListAdapter
 import com.example.todo_app.recyclerview.TaskListAdapterCategory
+import com.example.todo_app.recyclerview.TaskListAdapterCategoryEdit
 
 class Task_view : Fragment() {
 
@@ -32,12 +34,14 @@ class Task_view : Fragment() {
         val v = inflater.inflate(R.layout.fragment_task_view, container, false)
 
         //val floating_button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
-        recyclerView = v.findViewById<RecyclerView>(R.id.task_list)
+        recyclerView = v.findViewById<RecyclerView>(R.id.RecyclerView_category_view)
 
         val categoryEntity = ObjectBox.store.boxFor(CategoryEntity::class.java)
-
+        //val ent: CategoryEntity = CategoryEntity()
+        //ent.description = "KATEGORIE OSOBNÍ RŮST"
+        //categoryEntity.put(ent)
         // Vytvoříme instanci adaptéru s prázdným seznamem
-        val taskListAdapter = TaskListAdapterCategory(emptyList(), categoryEntity )
+        val taskListAdapter = TaskListAdapterCategoryEdit(emptyList(), categoryEntity )
 
         // Přidáme položky do seznamu
         val tasks = categoryEntity.all
@@ -52,7 +56,7 @@ class Task_view : Fragment() {
         recyclerView.layoutManager = layoutManager
 
         // Create the ItemTouchHelper and attach it to the RecyclerView
-        val callback = ItemTouchHelperCallbackCategory(taskListAdapter)
+        val callback = ItemTouchHelperCallbackCategoryEdit(taskListAdapter)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(recyclerView)
 

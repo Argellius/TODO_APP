@@ -1,18 +1,23 @@
 package com.example.todo_app
 
 import CategoryEntity
+import NewTaskDialog
 import TaskEntity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.database.ObjectBox
 import com.example.todo_app.recyclerview.TaskListAdapter
 import com.example.todo_app.recyclerview.TaskListAdapterCategory
+import com.google.android.material.imageview.ShapeableImageView
 import io.objectbox.Box
+
 
 class Need_to_do_task : Fragment() {
 
@@ -20,6 +25,7 @@ class Need_to_do_task : Fragment() {
     private var actPositon = 0
     private lateinit var taskBox: Box<TaskEntity>
     private lateinit var categoryBox: Box<CategoryEntity>
+    private lateinit var mTaskNewButton: ShapeableImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +37,8 @@ class Need_to_do_task : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_need_to_do_task, container, false)
+
+        mTaskNewButton = v?.findViewById(R.id.button_add_task) as ShapeableImageView
 
         taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
         categoryBox = ObjectBox.store.boxFor(CategoryEntity::class.java)
@@ -62,6 +70,11 @@ class Need_to_do_task : Fragment() {
         recyclerView?.layoutManager = layoutManager
 
         recyclerView_category?.layoutManager = layoutManager_category
+
+        mTaskNewButton.setOnClickListener(View.OnClickListener {
+            val dialog = NewTaskDialog()
+            dialog.show(childFragmentManager, "NewTaskDialog")
+        })
 
 
         return v

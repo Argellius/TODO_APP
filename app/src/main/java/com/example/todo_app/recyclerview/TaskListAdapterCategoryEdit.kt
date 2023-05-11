@@ -12,11 +12,11 @@ import com.example.todo_app.R
 import io.objectbox.Box
 import java.util.*
 
-class TaskListAdapterCategory(
+class TaskListAdapterCategoryEdit(
     private var dataSet: List<CategoryEntity>,
     private val taskBox: Box<CategoryEntity>,
 ) :
-    RecyclerView.Adapter<TaskListAdapterCategory.ViewHolder>() {
+    RecyclerView.Adapter<TaskListAdapterCategoryEdit.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
@@ -27,7 +27,7 @@ class TaskListAdapterCategory(
 
         init {
             // Define click listener for the ViewHolder's View
-            textView = view.findViewById(R.id.description_text_view_category)
+            textView = view.findViewById(R.id.description_text_view)
         }
     }
 
@@ -47,6 +47,7 @@ class TaskListAdapterCategory(
         }
         notifyItemMoved(fromPosition, toPosition)
     }
+
     fun setData(newData: List<CategoryEntity>) {
         dataSet = newData
         notifyDataSetChanged()
@@ -57,7 +58,7 @@ class TaskListAdapterCategory(
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(viewHolder: TaskListAdapterCategory.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: TaskListAdapterCategoryEdit.ViewHolder, position: Int) {
 
         val taskEntity = dataSet[position]
 
@@ -68,15 +69,15 @@ class TaskListAdapterCategory(
     }
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TaskListAdapterCategory.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TaskListAdapterCategoryEdit.ViewHolder {
 
         // Create a new view, which defines the UI of the list item
         val view =
             LayoutInflater
                 .from(viewGroup.context)
-                .inflate(R.layout.task_item_category, viewGroup, false)
+                .inflate(R.layout.task_item, viewGroup, false)
 
-        return TaskListAdapterCategory.ViewHolder(view)
+        return TaskListAdapterCategoryEdit.ViewHolder(view)
     }
 
 
