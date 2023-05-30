@@ -12,3 +12,4 @@ data class CategoryEntity(
 ){
     constructor() : this(0, "", 0, 0 )
 }
+
