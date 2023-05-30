@@ -17,7 +17,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Kategorie"
+        android:text="@string/category"
         android:textColor="@color/darker_gray"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -25,6 +25,25 @@
         app:layout_constraintHorizontal_bias="0.114"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/button_add_category"
+        android:layout_width="43dp"
+        android:layout_height="37dp"
+        android:background="#3cbcd4"
+        android:padding="8dp"
+        android:src="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toTopOf="@+id/RecyclerView_category_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.94"
+        app:shapeAppearanceOverlay="@style/RoundedImageView"
+        app:strokeColor="@color/white"
+        app:strokeWidth="1dp"
+        app:tint="@color/white"
+        tools:ignore="ContentDescription" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerView_category_view"

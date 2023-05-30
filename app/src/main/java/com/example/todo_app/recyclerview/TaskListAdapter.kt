@@ -91,11 +91,11 @@ class TaskListAdapter(
             if (taskEntity.isDone == true) {
                 // Remove the unchecked task from the current position
                 dataSet =
-                    dataSet.toMutableList().apply { removeAt(taskEntity.position!!.toInt()) }
+                    dataSet.toMutableList().apply { removeAt(taskEntity.position.toInt()) }
                 // Add the unchecked task to the end of the list
                 dataSet = dataSet.toMutableList().apply { add(taskEntity) }
                 // Notify the RecyclerView that the item has been moved
-                notifyItemMoved(taskEntity.position!!.toInt(), dataSet.size - 1)
+                notifyItemMoved(taskEntity.position.toInt(), dataSet.size - 1)
             }
 
             // Update the positions of the tasks in the database
@@ -137,5 +137,12 @@ class TaskListAdapter(
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+    fun addData(item: TaskEntity) {
+        val updatedList = dataSet.toMutableList() // Vytvoření kopie stávajícího seznamu
+        updatedList.add(0, item) // Přidání nové položky do kopie seznamu
+        dataSet = updatedList.toList() // Přiřazení upraveného seznamu zpět do dataSet
+        notifyItemInserted(0) // Upozornění adaptéru na vložení nové položky
+    }
+
 
 }

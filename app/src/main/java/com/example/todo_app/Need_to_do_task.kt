@@ -4,11 +4,10 @@ import CategoryEntity
 import NewTaskDialog
 import TaskEntity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +25,10 @@ class Need_to_do_task : Fragment() {
     private lateinit var taskBox: Box<TaskEntity>
     private lateinit var categoryBox: Box<CategoryEntity>
     private lateinit var mTaskNewButton: ShapeableImageView
+    private lateinit var listAdapterCategory: TaskListAdapterCategory
+    private lateinit var listAdapterTask: TaskListAdapter
+    private lateinit var recyclerViewTask: RecyclerView
+    private lateinit var recyclerViewCategory: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,42 +40,51 @@ class Need_to_do_task : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_need_to_do_task, container, false)
-
+        //Button save
         mTaskNewButton = v?.findViewById(R.id.button_add_task) as ShapeableImageView
-
+        //Task Database
         taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
+        //Category Database
         categoryBox = ObjectBox.store.boxFor(CategoryEntity::class.java)
-        val recyclerView: RecyclerView? = v?.findViewById(R.id.RecyclerView_todays_task)
-        val recyclerView_category: RecyclerView? = v?.findViewById(R.id.RecyclerView_category)
+        //RecycleView
+        recyclerViewTask = v.findViewById(R.id.RecyclerView_todays_task)
+        recyclerViewCategory = v.findViewById(R.id.RecyclerView_category)
 
         // Vytvoříme instanci adaptéru s prázdným seznamem
-        val taskListAdapter = TaskListAdapter(emptyList(), taskBox )
-        val taskListAdapter_category = TaskListAdapterCategory(emptyList(), categoryBox )
+        val listAdapterTask = TaskListAdapter(emptyList(), taskBox )
+        val listAdapterCategory =
+            TaskListAdapterCategory(emptyList(), categoryBox, requireContext(), taskBox)
 
-        // Přidáme položky do seznamu
+        // Přidáme položky do seznamu tasků
         val tasks = taskBox.all
-            .sortedBy { it.position }
+            .sortedByDescending { it.position }
 
-        // Přidáme položky do seznamu
+        for (task in tasks) {
+            Log.d("TAG", "Task: $task")
+        }
+
+        // Přidáme položky do seznamu kategorií
         val tasks_category = categoryBox.all
             .sortedBy { it.position }
 
-        taskListAdapter.setData(tasks)
-        taskListAdapter_category.setData(tasks_category)
+        listAdapterTask.setData(tasks)
+        listAdapterCategory.setData(tasks_category)
 
         // Předáme instanci adaptéru k RecyclerView
-        recyclerView?.adapter = taskListAdapter
-        recyclerView_category?.adapter = taskListAdapter_category
+        recyclerViewTask.adapter = listAdapterTask
+        recyclerViewCategory.adapter = listAdapterCategory
 
         //Layouty
         val layoutManager = LinearLayoutManager(activity)
         val layoutManager_category = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerView?.layoutManager = layoutManager
+        recyclerViewTask.layoutManager = layoutManager
+        recyclerViewCategory.layoutManager = layoutManager_category
 
-        recyclerView_category?.layoutManager = layoutManager_category
-
-        mTaskNewButton.setOnClickListener(View.OnClickListener {
-            val dialog = NewTaskDialog()
+        mTaskNewButton.setOnClickListener({
+            val dialog = NewTaskDialog(tasks_category)
+            dialog.setAdapterRecyc(listAdapterTask)
+            dialog.setAdapterRecycCategory(listAdapterCategory)
+            dialog.setRecyclerView(recyclerViewTask)
             dialog.show(childFragmentManager, "NewTaskDialog")
         })
 
@@ -80,6 +92,9 @@ class Need_to_do_task : Fragment() {
         return v
     }
 
+    fun getRecyclerViewTask(): RecyclerView {
+        return recyclerViewTask
+    }
     fun swapToRight() {
     if (actPositon >= (allValidTask?.size?.minus(1) ?: -1)) {
         return

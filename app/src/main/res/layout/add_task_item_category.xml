@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/task_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="18sp"
-        android:hint="Insert information about catogory"
-        android:autofillHints="Go to bed"
-        android:inputType="text" />
-
-    <Button
-        android:id="@+id/save_button"
+        android:id="@+id/category_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add" />
-</LinearLayout>
+        android:hint="@string/category_name"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/category_edit_text"
+        android:layout_marginTop="16dp"
+        android:text="@string/add" />
+
+</RelativeLayout>

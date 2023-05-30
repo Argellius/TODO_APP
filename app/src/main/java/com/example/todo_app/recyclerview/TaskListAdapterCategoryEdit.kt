@@ -1,11 +1,9 @@
 package com.example.todo_app.recyclerview
 
 import CategoryEntity
-import TaskEntity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
@@ -58,7 +56,7 @@ class TaskListAdapterCategoryEdit(
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(viewHolder: TaskListAdapterCategoryEdit.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         val taskEntity = dataSet[position]
 
@@ -69,7 +67,7 @@ class TaskListAdapterCategoryEdit(
     }
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TaskListAdapterCategoryEdit.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
 
         // Create a new view, which defines the UI of the list item
         val view =
@@ -77,7 +75,7 @@ class TaskListAdapterCategoryEdit(
                 .from(viewGroup.context)
                 .inflate(R.layout.task_item, viewGroup, false)
 
-        return TaskListAdapterCategoryEdit.ViewHolder(view)
+        return ViewHolder(view)
     }
 
 
@@ -105,5 +103,11 @@ class TaskListAdapterCategoryEdit(
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+    fun addData(item: CategoryEntity) {
+        val updatedList = dataSet.toMutableList() // Vytvoření kopie stávajícího seznamu
+        updatedList.add(0, item) // Přidání nové položky do kopie seznamu
+        dataSet = updatedList.toList() // Přiřazení upraveného seznamu zpět do dataSet
+        notifyItemInserted(0) // Upozornění adaptéru na vložení nové položky
+    }
 
 }

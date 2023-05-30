@@ -1,4 +1,4 @@
-<!-- R.layout.spinner_item_text -->
+<!-- R.layout.spinner_item_dropdown -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/text1"
     android:layout_width="match_parent"
@@ -6,4 +6,7 @@
     android:textSize="18sp"
     android:textColor="#000000"
     android:padding="10dp"
-    android:background="@drawable/spinner_item_text_background" />
+    android:background="@drawable/spinner_item_dropdown_background"
+    android:drawablePadding="8dp"
+    android:drawableStart="@drawable/ic_dropdown_icon"
+    android:gravity="center_vertical" />

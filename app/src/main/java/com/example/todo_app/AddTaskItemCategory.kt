@@ -17,8 +17,8 @@ class AddTaskItemCategory : AppCompatActivity() {
         setContentView(R.layout.add_task_item_category)
 
         // Initialize the EditText and Button views
-        taskEditText = findViewById(R.id.task_edit_text)
-        saveButton = findViewById(R.id.save_button)
+        taskEditText = findViewById(R.id.category_edit_text)
+        saveButton = findViewById(R.id.add_button)
         categoryTaskBox = ObjectBox.store.boxFor(CategoryEntity::class.java)
 
         // Set a click listener on the save button
@@ -26,7 +26,7 @@ class AddTaskItemCategory : AppCompatActivity() {
             // Get the task name from the EditText view
             val taskName = taskEditText.text.toString()
 
-            val te : CategoryEntity = CategoryEntity()
+            val te = CategoryEntity()
             te.description = taskName
             categoryTaskBox.put(te)
             // Clear the EditText view
