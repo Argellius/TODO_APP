@@ -3,31 +3,24 @@ package com.example.todo_app
 import CategoryEntity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.Spinner
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import com.example.todo_app.database.ObjectBox
 import com.example.todo_app.databinding.ActivityMainBinding
 import io.objectbox.Box
 import io.objectbox.BoxStore
-import io.objectbox.kotlin.boxFor
 
 class MainActivity : AppCompatActivity() {
 
 
     private lateinit var categoryBox: Box<CategoryEntity>
-    private lateinit var boxStore: BoxStore
     private lateinit var binding : ActivityMainBinding
-    private lateinit var spinner : Spinner
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ObjectBox.init(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(Need_to_do_task())
+        replaceFragment(TaskList())
 
 
         // Inicializace ObjectBox
@@ -48,8 +41,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener{
             when (it.itemId) {
 
-                R.id.home -> replaceFragment(Need_to_do_task())
-                R.id.home2 -> replaceFragment(Task_view())
+                R.id.home -> replaceFragment(TaskList())
+                R.id.home2 -> replaceFragment(ListCategories())
                 R.id.settings -> replaceFragment(Settings())
 
                 else -> {

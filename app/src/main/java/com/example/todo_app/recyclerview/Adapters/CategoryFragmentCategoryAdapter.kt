@@ -1,4 +1,4 @@
-package com.example.todo_app.recyclerview
+package com.example.todo_app.recyclerview.Adapters
 
 import CategoryEntity
 import android.view.LayoutInflater
@@ -10,11 +10,11 @@ import com.example.todo_app.R
 import io.objectbox.Box
 import java.util.*
 
-class TaskListAdapterCategoryEdit(
+class CategoryFragmentCategoryAdapter(
     private var dataSet: List<CategoryEntity>,
     private val taskBox: Box<CategoryEntity>,
 ) :
-    RecyclerView.Adapter<TaskListAdapterCategoryEdit.ViewHolder>() {
+    RecyclerView.Adapter<CategoryFragmentCategoryAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using

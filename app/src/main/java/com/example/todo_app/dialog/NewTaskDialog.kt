@@ -1,3 +1,7 @@
+package com.example.todo_app.dialog
+
+import CategoryEntity
+import TaskEntity
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,20 +13,21 @@ import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
 import com.example.todo_app.database.ObjectBox
-import com.example.todo_app.recyclerview.TaskListAdapter
-import com.example.todo_app.recyclerview.TaskListAdapterCategory
+import com.example.todo_app.recyclerview.Adapters.TaskFragmentNewTaskCategoryAdapter
+import com.example.todo_app.recyclerview.Adapters.TaskListAdapter
+import com.example.todo_app.recyclerview.Adapters.TaskFragmentCategoryAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.objectbox.Box
 
 
-class NewTaskDialog(private val tasks_category: List<CategoryEntity>) : BottomSheetDialogFragment(), DialogInterface.OnDismissListener {
+class NewTaskDialog(private val categories_record: List<CategoryEntity>) : BottomSheetDialogFragment(), DialogInterface.OnDismissListener {
 
     private lateinit var taskEditText: EditText
     private lateinit var saveButton: Button
     private lateinit var spinnerCategory: Spinner
     private lateinit var taskBox: Box<TaskEntity>
     private var adapterRecyc: TaskListAdapter? = null
-    private var adapterRecycCategory: TaskListAdapterCategory? = null
+    private var adapterRecycCategory: TaskFragmentCategoryAdapter? = null
     private var recyclerView: RecyclerView? = null
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -36,7 +41,7 @@ class NewTaskDialog(private val tasks_category: List<CategoryEntity>) : BottomSh
     fun setAdapterRecyc(adapter: TaskListAdapter) {
         this.adapterRecyc = adapter
     }
-    fun setAdapterRecycCategory(adapter: TaskListAdapterCategory) {
+    fun setAdapterRecycCategory(adapter: TaskFragmentCategoryAdapter) {
         this.adapterRecycCategory = adapter
     }
 
@@ -58,7 +63,7 @@ class NewTaskDialog(private val tasks_category: List<CategoryEntity>) : BottomSh
         saveButton = view.findViewById(R.id.add_button) as Button
         taskBox = ObjectBox.store.boxFor(TaskEntity::class.java)
 
-        val adapter = NewTaskCategoryAdapter(requireContext(), tasks_category)
+        val adapter = TaskFragmentNewTaskCategoryAdapter(requireContext(), categories_record)
         spinnerCategory.adapter = adapter
 
         // Set a click listener on the add button

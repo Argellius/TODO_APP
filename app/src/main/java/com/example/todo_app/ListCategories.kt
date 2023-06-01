@@ -1,8 +1,8 @@
 package com.example.todo_app
 
 import CategoryEntity
-import ItemTouchHelperCallbackCategoryEdit
-import NewCategoryDialog
+import CategoryFragItemTouchHelperCallback
+import com.example.todo_app.dialog.NewCategoryDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.database.ObjectBox
-import com.example.todo_app.recyclerview.TaskListAdapterCategoryEdit
+import com.example.todo_app.recyclerview.Adapters.CategoryFragmentCategoryAdapter
 import com.google.android.material.imageview.ShapeableImageView
 
-class Task_view : Fragment() {
+class ListCategories : Fragment() {
 
     private lateinit var recyclerView : RecyclerView
     private lateinit var mCategoryNewButton: ShapeableImageView
-    private lateinit var categoryListAdapter : TaskListAdapterCategoryEdit
+    private lateinit var categoryListAdapter : CategoryFragmentCategoryAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,14 +32,14 @@ class Task_view : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        val v = inflater.inflate(R.layout.fragment_task_view, container, false)
+        val v = inflater.inflate(R.layout.fragment_list_categories, container, false)
         mCategoryNewButton = v?.findViewById(R.id.button_add_category) as ShapeableImageView
         //val floating_button = v?.findViewById<FloatingActionButton>(R.id.floating_button)
         recyclerView = v.findViewById<RecyclerView>(R.id.RecyclerView_category_view)
         //Databáze
         val categoryEntity = ObjectBox.store.boxFor(CategoryEntity::class.java)
         //CategoryAdapter
-        categoryListAdapter = TaskListAdapterCategoryEdit(emptyList(), categoryEntity )
+        categoryListAdapter = CategoryFragmentCategoryAdapter(emptyList(), categoryEntity )
         //val ent: CategoryEntity = CategoryEntity()
         //ent.description = "KATEGORIE OSOBNÍ RŮST"
         //categoryEntity.put(ent)
@@ -59,7 +59,7 @@ class Task_view : Fragment() {
         recyclerView.layoutManager = layoutManager
 
         // Create the ItemTouchHelper and attach it to the RecyclerView
-        val callback = ItemTouchHelperCallbackCategoryEdit(categoryListAdapter)
+        val callback = CategoryFragItemTouchHelperCallback(categoryListAdapter)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(recyclerView)
 
@@ -67,7 +67,7 @@ class Task_view : Fragment() {
             val dialog = NewCategoryDialog()
             dialog.setAdapterRecyc(categoryListAdapter)
             dialog.setRecyclerView(recyclerView)
-            dialog.show(childFragmentManager, "NewCategoryDialog")
+            dialog.show(childFragmentManager, "com.example.todo_app.dialog.NewCategoryDialog")
             // Get the Dialog object from the DialogFragment and set the OnDismissListener on it
             dialog.dialog?.setOnDismissListener {
                 // Call your refreshRecyclerView() method here to update the RecyclerView

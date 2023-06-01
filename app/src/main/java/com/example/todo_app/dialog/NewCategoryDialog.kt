@@ -1,3 +1,6 @@
+package com.example.todo_app.dialog
+
+import CategoryEntity
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +11,7 @@ import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
 import com.example.todo_app.database.ObjectBox
-import com.example.todo_app.recyclerview.TaskListAdapterCategoryEdit
+import com.example.todo_app.recyclerview.Adapters.CategoryFragmentCategoryAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.objectbox.Box
 
@@ -19,7 +22,7 @@ class NewCategoryDialog : BottomSheetDialogFragment() {
     private lateinit var saveButton: Button
     private lateinit var categoryBox: Box<CategoryEntity>
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapterRecyc: TaskListAdapterCategoryEdit
+    private lateinit var adapterRecyc: CategoryFragmentCategoryAdapter
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
@@ -28,7 +31,7 @@ class NewCategoryDialog : BottomSheetDialogFragment() {
 
     }
 
-    fun setAdapterRecyc(adapter: TaskListAdapterCategoryEdit) {
+    fun setAdapterRecyc(adapter: CategoryFragmentCategoryAdapter) {
         this.adapterRecyc = adapter
     }
 
@@ -39,7 +42,7 @@ class NewCategoryDialog : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.add_task_item_category, container, false)
         // Initialize the EditText and Button views
         taskEditText = view.findViewById(R.id.category_edit_text) as EditText

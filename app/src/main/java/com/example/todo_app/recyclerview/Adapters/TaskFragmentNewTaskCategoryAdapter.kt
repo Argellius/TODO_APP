@@ -1,3 +1,6 @@
+package com.example.todo_app.recyclerview.Adapters
+
+import CategoryEntity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.todo_app.R
 
-class NewTaskCategoryAdapter(
+class TaskFragmentNewTaskCategoryAdapter(
     private val context: Context,
     private val categories: List<CategoryEntity>,
 ) : BaseAdapter() {

@@ -1,10 +1,8 @@
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todo_app.recyclerview.TaskListAdapter
-import com.example.todo_app.recyclerview.TaskListAdapterCategory
-import java.util.*
+import com.example.todo_app.recyclerview.Adapters.TaskFragmentCategoryAdapter
 
-class ItemTouchHelperCallbackCategory(private val adapter: TaskListAdapterCategory) :
+class ItemTouchHelperCallbackCategory(private val adapter: TaskFragmentCategoryAdapter) :
     ItemTouchHelper.Callback() {
 
     override fun isLongPressDragEnabled(): Boolean {

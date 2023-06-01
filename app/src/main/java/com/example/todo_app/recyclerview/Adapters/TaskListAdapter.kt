@@ -1,4 +1,4 @@
-package com.example.todo_app.recyclerview
+package com.example.todo_app.recyclerview.Adapters
 
 import TaskEntity
 import android.view.LayoutInflater

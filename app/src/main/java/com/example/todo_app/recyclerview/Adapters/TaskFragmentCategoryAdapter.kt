@@ -1,4 +1,4 @@
-package com.example.todo_app.recyclerview
+package com.example.todo_app.recyclerview.Adapters
 
 import CategoryEntity
 import TaskEntity
@@ -12,13 +12,13 @@ import com.example.todo_app.R
 import io.objectbox.Box
 import java.util.*
 
-class TaskListAdapterCategory(
+class TaskFragmentCategoryAdapter(
     private var categoryDataSet: List<CategoryEntity>,
     private val categoryBox: Box<CategoryEntity>,
     private val context : Context,
     private val taskBox: Box<TaskEntity>
 ) :
-    RecyclerView.Adapter<TaskListAdapterCategory.ViewHolder>() {
+    RecyclerView.Adapter<TaskFragmentCategoryAdapter.ViewHolder>() {
 
     private lateinit var myContext: Context
 

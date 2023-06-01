@@ -1,7 +1,6 @@
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.todo_app.recyclerview.TaskListAdapter
-import java.util.*
+import com.example.todo_app.recyclerview.Adapters.TaskListAdapter
 
 class ItemTouchHelperCallback(private val adapter: TaskListAdapter) :
     ItemTouchHelper.Callback() {

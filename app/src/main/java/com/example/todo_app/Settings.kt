@@ -13,7 +13,6 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [Settings.newInstance] factory method to
  * create an instance of this fragment.
  */
 class Settings : Fragment() {
@@ -34,6 +33,6 @@ class Settings : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return inflater.inflate(R.layout.fragment_setting, container, false)
     }
 }

@@ -29,4 +29,6 @@
     <string name="task_name_hint">Task name</string>
     <string name="category">Category</string>
     <string name="unknown">Unknown</string>
+    <string name="you_can_do_it">You can do it !!</string>
+    <string name="today_s_task">Today\'s task</string>
 </resources>

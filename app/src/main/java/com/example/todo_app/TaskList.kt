@@ -1,7 +1,7 @@
 package com.example.todo_app
 
 import CategoryEntity
-import NewTaskDialog
+import com.example.todo_app.dialog.NewTaskDialog
 import TaskEntity
 import android.os.Bundle
 import android.util.Log
@@ -12,21 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.database.ObjectBox
-import com.example.todo_app.recyclerview.TaskListAdapter
-import com.example.todo_app.recyclerview.TaskListAdapterCategory
+import com.example.todo_app.recyclerview.Adapters.TaskListAdapter
+import com.example.todo_app.recyclerview.Adapters.TaskFragmentCategoryAdapter
 import com.google.android.material.imageview.ShapeableImageView
 import io.objectbox.Box
 
 
-class Need_to_do_task : Fragment() {
+class TaskList : Fragment() {
 
     private var allValidTask: List<TaskEntity>? = null
     private var actPositon = 0
     private lateinit var taskBox: Box<TaskEntity>
     private lateinit var categoryBox: Box<CategoryEntity>
     private lateinit var mTaskNewButton: ShapeableImageView
-    private lateinit var listAdapterCategory: TaskListAdapterCategory
-    private lateinit var listAdapterTask: TaskListAdapter
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var recyclerViewCategory: RecyclerView
 
@@ -37,9 +35,9 @@ class Need_to_do_task : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        val v = inflater.inflate(R.layout.fragment_need_to_do_task, container, false)
+        val v = inflater.inflate(R.layout.fragment_task_list, container, false)
         //Button save
         mTaskNewButton = v?.findViewById(R.id.button_add_task) as ShapeableImageView
         //Task Database
@@ -53,7 +51,7 @@ class Need_to_do_task : Fragment() {
         // Vytvoříme instanci adaptéru s prázdným seznamem
         val listAdapterTask = TaskListAdapter(emptyList(), taskBox )
         val listAdapterCategory =
-            TaskListAdapterCategory(emptyList(), categoryBox, requireContext(), taskBox)
+            TaskFragmentCategoryAdapter(emptyList(), categoryBox, requireContext(), taskBox)
 
         // Přidáme položky do seznamu tasků
         val tasks = taskBox.all
@@ -85,7 +83,7 @@ class Need_to_do_task : Fragment() {
             dialog.setAdapterRecyc(listAdapterTask)
             dialog.setAdapterRecycCategory(listAdapterCategory)
             dialog.setRecyclerView(recyclerViewTask)
-            dialog.show(childFragmentManager, "NewTaskDialog")
+            dialog.show(childFragmentManager, "com.example.todo_app.dialog.NewTaskDialog")
         })
 
 
